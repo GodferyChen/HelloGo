@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"fmt"
+	"math"
 )
 
 func main() {
@@ -13,6 +14,77 @@ func main() {
 		{1, 1, 0, 0},
 	}
 	fmt.Println(islandPerimeter(grid))
+	fmt.Println(findMaxConsecutiveOnes([]int{1, 0, 1, 1, 1}))
+
+	var list1 = []string{"Shogun","Tapioca Express","Burger King","KFC"}
+	var list2 = []string{"KFC","Burger King","Tapioca Express","Shogun"}
+	fmt.Println(findRestaurant(list1,list2))
+}
+
+func findRestaurant(list1 []string, list2 []string) []string {
+	for _, item1 := range list1 {
+		for _, item2 := range list2 {
+			if item1 == item2 {
+				return []string{item1}
+			}
+		}
+	}
+	return []string{}
+}
+
+func findDisappearedNumbers(nums []int) []int {
+	var res = [] int{}
+	for i := 0; i < len(nums); i++ {
+		temp := int(math.Abs(float64(nums[i])) - 1)
+		if nums[temp] > 0 {
+			nums[temp] = -nums[temp]
+		}
+	}
+	for i := 0; i < len(nums); i++ {
+		if nums[i] > 0 {
+			res = append(res, i+1)
+		}
+	}
+	return res
+}
+
+/**
+检测大写格式
+ */
+func detectCapitalUse(word string) bool {
+	cnt := 0
+	for _, n := range word {
+		if n <= 'Z' {
+			cnt = cnt + 1
+		}
+	}
+	return cnt == 0 || cnt == len(word) || (cnt == 1 && word[0] <= 'Z')
+}
+
+func singleNumber(nums []int) int {
+	res := 0
+	for _, n := range nums {
+		res = res ^ n
+	}
+	return res
+}
+
+func findMaxConsecutiveOnes(nums []int) int {
+	max := 0
+	maxHere := 0
+	for _, n := range nums {
+		if n == 0 {
+			maxHere = 0
+		} else {
+			maxHere++
+		}
+		max = int(math.Max(float64(max), float64(maxHere)))
+	}
+	return max
+}
+
+func canWinNim(n int) bool {
+	return n%4 != 0
 }
 
 func islandPerimeter(grid [][]int) int {
